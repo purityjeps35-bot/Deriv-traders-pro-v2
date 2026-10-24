@@ -77,11 +77,23 @@ export default function Home() {
         setStatus("Connection error");
       };
 
-      socket.onclose = () => {
-        if (stopped) return;
-        setStatus("Disconnected — retrying");
-        retry = setTimeout(connect, 3000);
-      };
+      socket.onclose = (event) => {
+  if (stopped) return;
+
+  const message =
+    `Socket closed: ${event.code} — ${
+      event.reason || "No reason provided"
+    }`;
+
+  console.log(message);
+  setStatus(message);
+
+  retry = setTimeout(connect, 5000);
+};
+       
+        
+        
+      
     }
 
     connect();
